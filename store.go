@@ -66,6 +66,10 @@ func (s *Store) InitIndex(name string) (ndx *Index, err error) {
 	indexMapping := bleve.NewIndexMapping()
 
 	switch engine {
+	case "boltdb":
+		ndx, err = initBoltIndex(indexPath, indexMapping)
+	case "leveldb":
+		ndx, err = initLevelIndex(indexPath, indexMapping)
 	case "badgerdb", "rocksdb":
 		ndx, err = initBadgerIndex(indexPath, indexMapping)
 	case "scorch":
