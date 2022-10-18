@@ -1,4 +1,4 @@
-module example.com/m
+module github.com/devforth/libsrchx
 
 go 1.19
 
