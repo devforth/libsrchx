@@ -7,11 +7,12 @@ import (
 	"github.com/blevesearch/bleve/index/store/boltdb"
 	"github.com/blevesearch/bleve/index/store/goleveldb"
 	"github.com/blevesearch/bleve/mapping"
+	"github.com/blevesearch/bleve/v2/index/upsidedown"
 )
 
 // create/open a new boltdb based index
 func initBoltIndex(path string, mapping mapping.IndexMapping) (*Index, error) {
-	typ := "boltdb"
+	typ := upsidedown.Name
 	ndx, err := bleve.NewUsing(path, mapping, typ, boltdb.Name, nil)
 	if err != nil && err == bleve.ErrorIndexPathExists {
 		ndx, err = bleve.Open(path)
@@ -21,7 +22,7 @@ func initBoltIndex(path string, mapping mapping.IndexMapping) (*Index, error) {
 
 // create/open a new leveldb based index
 func initLevelIndex(path string, mapping mapping.IndexMapping) (*Index, error) {
-	typ := "leveldb"
+	typ := upsidedown.Name
 	ndx, err := bleve.NewUsing(path, mapping, typ, goleveldb.Name, nil)
 	if err != nil && err == bleve.ErrorIndexPathExists {
 		ndx, err = bleve.Open(path)
