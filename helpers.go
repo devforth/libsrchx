@@ -1,13 +1,13 @@
 package srchx
 
 import (
-	"github.com/alash3al/bbadger"
 	"github.com/blevesearch/bleve"
 	"github.com/blevesearch/bleve/index/scorch"
 	"github.com/blevesearch/bleve/index/store/boltdb"
 	"github.com/blevesearch/bleve/index/store/goleveldb"
 	"github.com/blevesearch/bleve/mapping"
 	"github.com/blevesearch/bleve/v2/index/upsidedown"
+	"github.com/devforth/bbadger"
 )
 
 // create/open a new boltdb based index
