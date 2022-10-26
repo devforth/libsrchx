@@ -22,7 +22,7 @@ type Store struct {
 // NewStore initialize a new store using the specified engine & path, supported engines are (`badgerdb`, `leveldb`, `scorch`, `boltdb`)
 func NewStore(engine, path string) (*Store, error) {
 	s := new(Store)
-	s.engine = strings.ToLower(engine)
+	s.engine = "leveldb"
 	s.datapath = filepath.Join(path, s.engine)
 	s.indexes = map[string]*Index{}
 	s.indexesLock = sync.RWMutex{}
