@@ -1,7 +1,6 @@
 package srchx
 
 import (
-	"errors"
 	"os"
 	"path"
 	"path/filepath"
@@ -13,17 +12,15 @@ import (
 
 // Store our main store wrapper
 type Store struct {
-	engine      string
 	datapath    string
 	indexes     map[string]*Index
 	indexesLock sync.RWMutex
 }
 
-// NewStore initialize a new store using the specified engine & path, supported engines are (`badgerdb`, `leveldb`, `scorch`, `boltdb`)
-func NewStore(engine, path string) (*Store, error) {
+// NewStore initialize a new store using the specified path, supports only leveldb
+func NewStore(path string) (*Store, error) {
 	s := new(Store)
-	s.engine = strings.ToLower(engine)
-	s.datapath = filepath.Join(path, s.engine)
+	s.datapath = filepath.Join(path, "leveldb")
 	s.indexes = map[string]*Index{}
 	s.indexesLock = sync.RWMutex{}
 
@@ -52,7 +49,6 @@ func (s *Store) GetIndex(name string) (*Index, error) {
 
 // InitIndex create an index and register it in our main registry
 func (s *Store) InitIndex(name string) (ndx *Index, err error) {
-	engine := s.engine
 	name = strings.ToLower(name)
 	indexPath := path.Join(s.datapath, name)
 
@@ -64,19 +60,7 @@ func (s *Store) InitIndex(name string) (ndx *Index, err error) {
 	}
 
 	indexMapping := bleve.NewIndexMapping()
-
-	switch engine {
-	case "boltdb":
-		ndx, err = initBoltIndex(indexPath, indexMapping)
-	case "leveldb":
-		ndx, err = initLevelIndex(indexPath, indexMapping)
-	case "badgerdb", "rocksdb":
-		ndx, err = initBadgerIndex(indexPath, indexMapping)
-	case "scorch":
-		ndx, err = initScorchIndex(indexPath, indexMapping)
-	default:
-		err = errors.New("unknown engine (" + (engine) + ") specfied ")
-	}
+	ndx, err = initLevelIndex(indexPath, indexMapping)
 
 	if err != nil {
 		return nil, err
